@@ -1,0 +1,11 @@
+{% extends "shop/base.html" %}
+{% block title %} Отказ от заказа {% endblock %}
+{% block content %}
+<div id="main">
+    <p><a href="{% url 'shop:index' %}">MrPiT.online</a> / <a href="{% url 'profile' %}">Личный кабинет</a>
+    / Отказ от заказа</p>
+    <p>Вы отказались от заказа {{ order.name }}</p>
+    Вернуться в <a href="{% url 'profile' %}">Личный Кабинет</a><br>
+    Вернуться на <a href="{% url 'shop:index' %}">Главную</a>
+</div>
+{% endblock %}

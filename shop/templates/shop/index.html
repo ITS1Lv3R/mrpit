@@ -1,0 +1,76 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}
+Спортивное питаниe Mr.PIT
+{% endblock %}
+
+{% block content %}
+
+
+<div class="screen">
+    <img src="{% static 'img/font1.jpg' %}"><br><br>
+    <h1> Уникальный сервис подбора спортивного питания онлайн! </h1>
+    <form action="{% url 'shop:calc' %}" method="post" class="form_main">
+        <input type="submit" value="Попробовать бесплатно">
+        {% csrf_token %}
+    </form>
+</div>
+
+<div id="main">
+    <div class="index">
+        <h1 class="big"> Выбери СВОЮ ЦЕЛЬ:</h1>
+        <table id="maintable">
+             <tr>
+                 <td class="new_blood">
+                    {% for objective in objectives %}
+                    {% if objective.name == "Для начинающих" %}
+                    <a href="{{ objective.get_absolute_url }}">
+                        <img src="{% thumbnail objective.image 450x250 crop %}">
+                    </a>
+                     {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for objective in objectives %}
+                    {% if objective.name == "Похудение" %}
+                        <a href="{{ objective.get_absolute_url }}">
+                            <img src="{% thumbnail objective.image 450x250 crop %}">
+                        </a>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+             </tr>
+            <tr>
+                <td>
+                    {% for objective in objectives %}
+                    {% if objective.name == 'Набрать массу' %}
+                 <a href="{{ objective.get_absolute_url }}">
+                     <img src="{% thumbnail objective.image 450x250 crop %}">
+                 </a>
+                      {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for objective in objectives %}
+                    {% if objective.name == "Выносливость" %}
+                    <a href="{{ objective.get_absolute_url }}">
+                       <img src="{% thumbnail objective.image 450x250 crop %}">
+                    </a>
+                     {% endif %}
+                     {% endfor %}
+                </td>
+             </tr>
+        </table>
+
+        <div class="screen">
+            <h2>Нужна помощь с выбором? Воспользуйтесь калькулятором:</h2>
+            <form action="{% url 'shop:calc' %}" method="post" class="form_main">
+                <input type="submit" value="Перейти в калькулятор">
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

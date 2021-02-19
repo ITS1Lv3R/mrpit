@@ -1,0 +1,72 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+<div id="main">
+    {% if messages %}
+      <ul class="messages">
+       {% for message in messages %}
+        <li class="{{ message.tags }}">
+          {{ message|safe }}
+            <a href="#" class="close">x</a>
+        </li>
+       {% endfor %}
+      </ul>
+    {% endif %}
+    <a href="{% url 'shop:index' %}">MrPiT.online</a> / <a href="{% url 'cart:cart_detail' %}">Корзина</a>
+    / Оформление заказа
+
+    <h1 class="order_h1">Оформление заказа</h1>
+    <div class="accept">
+
+        <div class="order-info">
+            <h3>Ваш заказ:</h3>
+            <ul>
+                 {% for item in cart %}
+                 <li>
+                     {{ item.quantity }}x {{ item.flavour.product.name }} {{ item.flavour.product.size }} {{ item.flavour.name }}
+                     <span>{{ item.total_price|floatformat:"2" }} р.</span>
+                 </li>
+                 {% endfor %}
+                 {% if cart.coupon %}
+                 <li>
+                     Купон: "{{ cart.coupon.code }}" скидка: {{ cart.coupon.discount }}%
+                     <span>- {{ cart.get_discount|floatformat:"2" }} р.</span>
+                 </li>
+                 {% endif %}
+                <p>Итого: {{ cart.get_total_price_after_discount|floatformat:"2" }} р.</p>
+            </ul>
+
+        </div>
+
+        <div class="tabs">
+            <input id="tab1" type="radio" name="tabs">
+            <label for="tab1" title="Perm"><i class="fa fa-car" aria-hidden="true">Доставка (г.Пермь)</i></label>
+            <input id="tab3" type="radio" name="tabs" checked>
+            <label for="tab3" title="Russia"><i class="fa fa-truck" aria-hidden="true">Доставка по России </i></label>
+            <section id="content-tab1">
+                <p> Доставка осуществляется в пределах г. Пермь </p>
+                <p>Стоимость доставки по городу, в зависимости от удаленности склада Вы можете посмотреть по ссылке <a href="{% url 'shop:delivery' %}"> Доставка</a> </p>
+                    <form action="." method="post" >
+                          {% csrf_token %}
+                         {{ perm_form.as_p }}
+                        <input type="submit" name="perm_form" value="Подтвердить заказ">
+                    </form>
+            </section>
+
+            <section id="content-tab3">
+                <p> Доставка осуществляется в пределах Российской Федерации Почтой России. </p>
+                <p> Стоимость доставки составляет в среднем 400 р. Конкретная стоимость рассчитается автоматически после создания заказа.</p>
+                <form action="." method="post" >
+                     {% csrf_token %}
+                     {{ form.as_p }}
+                    <input type="submit" name="form" value="Подтвердить заказ">
+                </form>
+
+            </section>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
